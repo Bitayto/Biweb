@@ -1,0 +1,351 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(227, 239, 224);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 16px;
+    align-items: start;
+}
+.site-header{
+    background-color: rgb(80, 80,80);
+    position: sticky;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    
+}
+.site-name{
+    font-family: sans-serif;
+    font-size:3rem;
+    font-weight: bold;
+    text-align: left;
+    text-decoration: none;
+    color: rgb(240, 240, 240);
+    padding-right: 10px;
+    padding-left:10px;
+}
+.tagline{
+    color: rgb(131, 176, 134);
+    text-align: left;
+    flex-wrap: wrap;
+    font-size: 1.5rem;
+    padding: 10px;
+}
+.main-nav{
+    margin-left: auto;
+    min-width: 30%;
+}
+.main-nav ul{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 10px;
+    right: 0;
+    list-style: none;
+    gap: 10px;
+}
+
+.main-nav li{
+    display: inline-block;
+    border-radius: 4px;
+    background-color: rgb(203, 165, 165);
+    font-family: sans-serif;
+    border: 1px solid rgb(235, 233, 233);
+    padding: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    flex-wrap: wrap;
+}
+.main-nav a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.layout{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/*ve blak*/
+#gioi-thieu{
+    display: block;
+    padding: 10px;
+    margin: 20px;
+}
+
+#gioi-thieu h1{
+    text-align: center;
+    padding: auto;
+    font-family: sans-serif;
+    font-weight: bolder;
+    display: block;
+    box-sizing: border-box;
+    height: 70px;
+    line-height: 70px;
+    background-color: rgb(197, 197, 197);
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#gioi-thieu figure{
+    align-self: center;
+}
+
+#gioi-thieu figcaption{
+    text-align: center;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+#gioi-thieu img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#gia-tri{
+    background-color: rgb(201, 244, 203);
+    padding: 10px;
+    margin: 20px;
+}
+
+#gia-tri h2{
+    text-align: center;
+    font-family: sans-serif;
+    line-height: 50px;
+    margin-top: 0;
+    padding-top: 0;
+    background-color: rgb(139, 244, 155);
+}
+
+#gia-tri ul{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#gia-tri li{
+    flex: 1 1 300px;
+    background-color: rgb(213, 234, 165);
+    border-radius: 4px;
+    list-style: none;
+    margin: 5px;
+    border: 1px groove;
+    padding: 5px;
+}
+
+.value-card h3{
+    text-align: center;
+    background-color: beige;
+    margin-top: 0;
+    padding-top: 0;
+    font-size: 1.3rem;
+}
+
+.value-card p{
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#doi-ngu{
+    background-color: rgb(188, 242, 131);
+    padding: 10px;
+    margin: 20px;
+}
+
+#doi-ngu h2{
+    text-align: center;
+    font-family: sans-serif;
+    line-height: 50px;
+    margin-top: 0;
+    padding-top: 0;
+    background-color: rgb(96, 228, 116);
+}
+
+#doi-ngu ul{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#doi-ngu li{
+    flex: 1 1 300px;
+    background-color: rgb(213, 234, 165);
+    border-radius: 4px;
+    list-style: none;
+    margin: 5px;
+    border: 1px groove;
+    padding: 5px;
+}
+
+.member img{
+    width: 100%;
+    margin: 5px;
+}
+
+.member h3{
+    text-align: center;
+    background-color: beige;
+    margin-top: 0;
+    padding-top: 0;
+    font-size: 1.3rem;
+}
+
+.member p{
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#lien-he{
+    background-color: rgb(218, 242, 131);
+    padding: 10px;
+    margin: 20px;
+}
+
+#lien-he h2{
+    text-align: center;
+    font-family: sans-serif;
+    line-height: 50px;
+    margin-top: 0;
+    padding-top: 0;
+    background-color: rgb(244, 208, 80);
+}
+
+.contact-form{
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 20px;
+    border: 2px dashed;
+    border-radius: 25px;
+    background-color: rgb(235, 233, 233);
+}
+
+.contact-form label{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1.5rem;
+}
+
+.contact-form input{
+    border-radius: 10px;
+    background-color: antiquewhite;
+    width: 100%;
+    height: 50px;
+    font-size: 35px;
+}
+
+.contact-form textarea{
+    border-radius: 10px;
+    background-color: antiquewhite;
+    width: 100%;
+    height: 20%;
+    font-size: 35px;
+}
+
+.contact-form button{
+    border-radius: 10px;
+    width: auto;
+    height: 20%;
+    font-size: 20px;
+    flex-wrap: wrap;
+}
+
+aside{
+    position: sticky;
+    top: 200px;
+    background-color: rgb(250, 243, 173);
+    padding: 24px;
+    border-radius: 8px;
+    border: 1px solid black;
+    margin-right: 20px;
+}
+
+aside.sidebar h2 {
+    font-family: sans-serif;
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgb(109, 10, 6);
+}
+
+.sidebar ul{
+    list-style: none;
+    padding: 0;
+    margin-bottom: 32px;;
+}
+
+.sidebar ul.recent li {
+    padding: 8px 0;
+    border-bottom: 1px dashed black;
+    font-size: 0.95rem;
+}
+.sidebar p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.sidebar p a {
+    color: rgb(64, 195, 239);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.site-footer {
+    background-color: rgb(50, 50, 50);
+    color: rgb(218, 218, 218);
+    padding: 20px;
+    margin-top: 40px;
+    font-family: sans-serif;
+}
+
+.footer-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 30px;
+    max-width: 1200px;
+    
+}
+
+.footer-cols li{
+    border-left: 0.1px solid white;
+    padding: 30px;
+}
+
+.footer-cols li:first-child{
+    border-left: 0px;
+}
+
+
+.footer-cols h3 {
+    color: white;
+    font-size: 1.1rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.footer-cols p {
+    font-size: 0.9rem;
+    font-family: sans-serif;
+}
+
+.copyright {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgb(81, 81, 81);
+}
