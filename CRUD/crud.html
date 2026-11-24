@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script src='https://unpkg.com/react@18/umd/react.development.js'></script>
+    <script src='https://unpkg.com/react-dom@18/umd/react-dom.development.js'></script>
+    <script src='https://unpkg.com/@babel/standalone/babel.min.js'></script>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 6px;
+            border-radius: 6px;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id='root'></div>
+
+    <script type="text/babel">
+        function App() {
+            const [kw, setKeyword] = React.useState("");
+            const [newUser, setNewUser] = React.useState(null);
+
+            return (
+                <div>
+                    <h1>Quản lý người dùng</h1>
+                    <SearchForm onChangeValue={setKeyword} />
+                    <AddUser onAdd={setNewUser} />
+                    <ResultTable
+                        keyword={kw}
+                        user={newUser}
+                        onAdded={() => setNewUser(null)}
+                    />
+                </div>
+            );
+        }
+
+        function SearchForm({ onChangeValue }) {
+            return (
+                <input
+                    type="text"
+                    placeholder="Tìm theo name, username"
+                    onChange={(e) => onChangeValue(e.target.value)}
+                />
+            );
+        }
+
+        function AddUser({ onAdd }) {
+            const [adding, setAdding] = React.useState(false);
+            const [user, setUser] = React.useState({
+                name: "", username: "", email: "",
+                address: {
+                    street: "", suite: "", city: ""
+                },
+                phone: "",
+                website: ""
+            });
+
+            const handleChange = (e) => {
+                const { id, value } = e.target;
+                if (["street", "suite", "city"].includes(id)) {
+                    setUser({ ...user, address: { ...user.address, [id]: value } });
+                } else {
+                    setUser({ ...user, [id]: value });
+                }
+            };
+
+            const handleAdd = () => {
+                if (user.name === "" || user.username === "") {
+                    alert("Vui lòng nhập Name và Username!");
+                    return;
+                }
+                onAdd(user);
+                setUser({
+                    name: "", username: "", email: "",
+                    address: { street: "", suite: "", city: "" },
+                    phone: "", website: ""
+                });
+                setAdding(false);
+            };
+
+            return (
+                <div>
+                    <button onClick={() => setAdding(true)}>Thêm</button>
+                    {adding && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <h4>Thêm người dùng</h4>
+                                <label htmlFor="name"> Name: </label>
+                                <input id="name" type="text" value={user.name} onChange={handleChange} />
+                                <br /><label htmlFor="username"> Username: </label>
+                                <input id="username" type="text" value={user.username} onChange={handleChange} />
+                                <br /><label htmlFor="email"> Email: </label>
+                                <input id="email" type="text" value={user.email} onChange={handleChange} />
+                                <br /><label htmlFor="street"> Street: </label>
+                                <input id="street" type="text" value={user.address.street} onChange={handleChange} />
+                                <br /><label htmlFor="suite"> Suite: </label>
+                                <input id="suite" type="text" value={user.address.suite} onChange={handleChange} />
+                                <br /><label htmlFor="city"> City: </label>
+                                <input id="city" type="text" value={user.address.city} onChange={handleChange} />
+                                <br /><label htmlFor="phone"> Phone: </label>
+                                <input id="phone" type="text" value={user.phone} onChange={handleChange} />
+                                <br />
+                                <button onClick={handleAdd}>Thêm</button>
+                                <button onClick={() => setAdding(false)}>Hủy</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function ResultTable({ keyword, user, onAdded }) {
+            const [users, setUsers] = React.useState([]);
+            const [loading, setLoading] = React.useState(true);
+            const [editing, setEditing] = React.useState(null);
+
+            React.useEffect(() => {
+                fetch("https://jsonplaceholder.typicode.com/users")
+                    .then(res => res.json())
+                    .then(data => { setUsers(data); setLoading(false); });
+            }, []);
+
+            React.useEffect(() => {
+                if (user) {
+                    setUsers((prev) => {
+                        const maxId = prev.length > 0 ? Math.max(...prev.map(u => u.id)) : 0;
+                        return [...prev, { ...user, id: maxId + 1 }];
+                    });
+                    onAdded();
+                }
+            }, [user]);
+
+            const filteredUsers = users.filter(
+                (u) =>
+                    u.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                    u.username.toLowerCase().includes(keyword.toLowerCase())
+            );
+
+            function editUser(user) {
+                setEditing({ ...user, address: { ...user.address } });
+            }
+
+            function handleEditChange(field, value) {
+                if (["street", "suite", "city"].includes(field)) {
+                    setEditing({ ...editing, address: { ...editing.address, [field]: value } });
+                } else {
+                    setEditing({ ...editing, [field]: value });
+                }
+            }
+
+            function saveUser() {
+                setUsers(prev => prev.map(u => u.id === editing.id ? editing : u));
+                setEditing(null);
+            }
+
+            function removeUser(id) {
+                setUsers((prev) => prev.filter((u) => u.id != id));
+            }
+
+            if (loading) return <p>Đang tải dữ liệu...</p>;
+
+            return (
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredUsers.map((u) => (
+                                <tr key={u.id}>
+                                    <td>{u.id}</td>
+                                    <td>{u.name}</td>
+                                    <td>{u.username}</td>
+                                    <td>{u.email}</td>
+                                    <td>
+                                        {u.address.street}, {u.address.suite}, {u.address.city}
+                                    </td>
+                                    <td>{u.phone}</td>
+                                    <td>
+                                        <button onClick={() => editUser(u)}>Sửa</button>
+                                        <button className="btn-delete" onClick={() => removeUser(u.id)}>Xóa</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {editing && (
+                        <div className="modal-overlay">
+                            <div className="modal-content">
+                                <h4>Sửa người dùng</h4>
+                                <label htmlFor="name"> Name </label>
+                                <input id="name" type="text" value={editing.name}
+                                    onChange={(e) => handleEditChange("name", e.target.value)} />
+                                <br /><label htmlFor="username"> Username </label>
+                                <input id="username" type="text" value={editing.username}
+                                    onChange={(e) => handleEditChange("username", e.target.value)} />
+                                <br /><label htmlFor="email"> Email </label>
+                                <input id="email" type="text" value={editing.email}
+                                    onChange={(e) => handleEditChange("email", e.target.value)} />
+                                <br /><label htmlFor="street"> Street </label>
+                                <input id="street" type="text" value={editing.address.street}
+                                    onChange={(e) => handleEditChange("street", e.target.value)} />
+                                <br /><label htmlFor="suite"> Suite </label>
+                                <input id="suite" type="text" value={editing.address.suite}
+                                    onChange={(e) => handleEditChange("suite", e.target.value)} />
+                                <br /><label htmlFor="city"> City </label>
+                                <input id="city" type="text" value={editing.address.city}
+                                    onChange={(e) => handleEditChange("city", e.target.value)} />
+                                <br /><label htmlFor="phone"> Phone </label>
+                                <input id="phone" type="text" value={editing.phone}
+                                    onChange={(e) => handleEditChange("phone", e.target.value)} />
+                                <br />
+                                <button onClick={saveUser}>Lưu</button>
+                                <button onClick={() => setEditing(null)}>Hủy</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
